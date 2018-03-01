@@ -1,0 +1,155 @@
+\newif\ifColor
+% Add \Colortrue to settings.tex to use color
+% Otherwise, will show a primarily grayscale version of the document for printing
+
+\input{settings.tex}
+
+\documentclass[11pt,oneside,a4paper]{book}
+\usepackage{natbib}
+\usepackage{breakcites} % Do Not let citations break out of the text frame
+\usepackage{microtype} % Get rid of some frame busts automatically
+% Note: if microtype causes error on ubuntu, run
+% sudo apt-get install cm-super
+\title{Example Notation for Deep Learning}
+\author{Ian Goodfellow\\Yoshua Bengio\\Aaron Courville}
+\date{}
+\setcounter{tocdepth}{1}
+
+\pdfobjcompresslevel=0
+
+\usepackage{zref-abspage}
+
+\setcounter{secnumdepth}{3} % Number subsubsections, because we reference them,
+% so the reader needs numbers to find the correct place.
+
+
+\usepackage[vcentering,dvips]{geometry}
+\geometry{papersize={7in,9in},bottom=3pc,top=5pc,left=5pc,right=5pc,bmargin=4.5pc,footskip=18pt,headsep=25pt}
+
+
+%%% Packages %%%
+\usepackage{epsfig}
+\usepackage{subfigure}
+\usepackage[utf8]{inputenc}
+
+% Needed for some foreign characters
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{booktabs}
+% This allows us to cite chapters by name, which was useful for making the
+% acknowledgements page
+\usepackage{nameref}
+% Make sure there is a space between the subsection number and subsection title
+% in the table of contents.
+% If we do not do this we end up with 2 digit subsection numbers colliding with
+% the title.
+% See https://tex.stackexchange.com/questions/7853/toc-text-numbers-alignment/7856#7856?newreg=d2632892dd0345f388619f12fa794b11
+\usepackage[tocindentauto]{tocstyle}
+\usetocstyle{standard}
+
+\usepackage{bm}
+
+
+\usepackage{float}
+\newcommand{\boldindex}[1]{\textbf{\hyperpage{#1}}}
+\usepackage{makeidx}\makeindex
+% Make bibliography and index appear in table of contents
+\usepackage[nottoc]{tocbibind}
+% Using the caption package allows us to support captions that contain "itemize" environments.
+% The font=small option makes the text of captions smaller than the main text.
+\usepackage[font=small]{caption}
+
+% Used to change header sizes
+\usepackage{fancyhdr}
+
+
+
+\usepackage[chapter]{algorithm}
+\usepackage{algorithmic}
+% Include chapter number in algorithm number
+\renewcommand{\thealgorithm}{\arabic{chapter}.\arabic{algorithm}}
+
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
+% Define the P table cell environment
+% It is the same as p, but centers the text horizontally
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+% Rebuild the book document class's headers from scratch, but with different font size
+% (this is for MIT Press style)
+% Source: http://texblog.org/2012/10/09/changing-the-font-size-in-fancyhdr/
+\newcommand{\changefont}{% 1st arg to fontsize is font size. 2nd arg is the baseline skip. both in points.
+    \fontsize{9}{11}\selectfont
+}
+\fancyhf{}
+%\fancyhead[LE,RO]{\changefont \slshape \rightmark} %section
+\fancyhead[RE,LO]{\changefont \slshape \leftmark} %chapter
+\fancyfoot[C]{\changefont \thepage} %footer
+\pagestyle{fancy}
+\input{math_commands.tex}
+
+\usepackage[pdffitwindow=false,
+pdfview=FitH,
+pdfstartview=FitH,
+pagebackref=true,
+breaklinks=true,
+\ifColor
+colorlinks,
+\fi
+bookmarks=false,
+plainpages=false]{hyperref}
+
+% Make \[ \] math have equation numbers
+\DeclareRobustCommand{\[}{\begin{equation}}
+\DeclareRobustCommand{\]}{\end{equation}}
+
+% Allow align environments to cross page boundaries.
+% If we do not do this, we get weird gaps of several inches of white space
+% before or after some long align environments.
+\allowdisplaybreaks
+
+\begin{document}
+
+\setlength{\parskip}{0.25 \baselineskip}
+\newlength{\figwidth}
+\setlength{\figwidth}{26pc}
+% Spacing between notation sections
+\newlength{\notationgap}
+\setlength{\notationgap}{1pc}
+
+\typeout{START_CHAPTER "TOC" \theabspage}
+\frontmatter
+
+
+\maketitle
+\tableofcontents
+\typeout{END_CHAPTER "TOC" \theabspage}
+
+ \input{notation.tex}
+ \mainmatter
+ \input{commentary.tex}
+
+\small{
+\typeout{START_CHAPTER "bib" \theabspage}
+\bibliography{notation}
+\bibliographystyle{natbib}
+\clearpage
+\typeout{END_CHAPTER "bib" \theabspage}
+}
+\typeout{START_CHAPTER "index-" \theabspage}
+\printindex
+%\clearpage
+\typeout{END_CHAPTER "index-" \theabspage}
+%\newpage
+
+
+\end{document}
