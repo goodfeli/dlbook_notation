@@ -53,8 +53,8 @@
 \def\Partref#1{Part~\ref{#1}}
 \def\twopartref#1#2{parts \ref{#1} and \ref{#2}}
 
-\def\ceil#1{\lceil #1 \rceil}
-\def\floor#1{\lfloor #1 \rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
 \def\1{\bm{1}}
 \newcommand{\train}{\mathcal{D}}
 \newcommand{\valid}{\mathcal{D_{\mathrm{valid}}}}
